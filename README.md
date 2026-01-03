@@ -1,33 +1,63 @@
 # rpa-vehiclekeys
 
-A standalone vehicle key system for FiveM, built as part of the RP-Alpha suite.
+<div align="center">
 
-## Features
-- **Key Management**: robust ownership system for vehicles.
-- **Lock/Unlock**: Simple keybind (`L`) with visual and audio feedback.
-- **Engine Toggle**: Command (`/engine`) to toggle engine state.
-- **Integration**: Exports available for other resources (Garages, Jobs).
-- **Security**: Prevents engine start without keys.
+![GitHub Release](https://img.shields.io/github/v/release/RP-Alpha/rpa-vehiclekeys?style=for-the-badge&logo=github&color=blue)
+![GitHub commits](https://img.shields.io/github/commits-since/RP-Alpha/rpa-vehiclekeys/latest?style=for-the-badge&logo=git&color=green)
+![License](https://img.shields.io/github/license/RP-Alpha/rpa-vehiclekeys?style=for-the-badge&color=orange)
+![Downloads](https://img.shields.io/github/downloads/RP-Alpha/rpa-vehiclekeys/total?style=for-the-badge&logo=github&color=purple)
 
-## Installation
-1. Ensure `rpa-lib` is started.
-2. Add `ensure rpa-vehiclekeys` to your `server.cfg`.
+**Standalone Vehicle Key System**
 
-## Usage
-- **Lock/Unlock**: Press `L` near or inside a vehicle you own.
-- **Engine**: Type `/engine` inside a vehicle you own.
+</div>
 
-## Exports
+---
+
+## ✨ Features
+
+- 🔐 **Lock/Unlock** - Press `L` with visual & audio feedback
+- 🚗 **Engine Control** - `/engine` command
+- 🔗 **Integration** - Exports for garages and jobs
+- 🛡️ **Anti-Theft** - Prevents engine start without keys
+
+---
+
+## 📥 Installation
+
+1. Download the [latest release](https://github.com/RP-Alpha/rpa-vehiclekeys/releases/latest)
+2. Extract to your `resources` folder
+3. Add to `server.cfg`:
+   ```cfg
+   ensure rpa-vehiclekeys
+   ```
+
+---
+
+## 📚 Exports
+
 ```lua
--- Give keys to a player for a specific plate (Client Side)
+-- Give keys (Client)
 exports['rpa-vehiclekeys']:GiveKeys(plate)
 
--- Check if player has keys (Client Side)
+-- Check keys (Client)
 local hasKeys = exports['rpa-vehiclekeys']:HasKeys(plate)
 ```
 
-## Credits
-- RP-Alpha Development Team
+---
 
-## License
-MIT
+## ⌨️ Controls
+
+| Key | Action |
+|-----|--------|
+| `L` | Lock/Unlock vehicle |
+| `/engine` | Toggle engine |
+
+---
+
+## 📄 License
+
+MIT License - see [LICENSE](LICENSE) for details.
+
+<div align="center">
+  <sub>Built with ❤️ by <a href="https://github.com/RP-Alpha">RP-Alpha</a></sub>
+</div>
