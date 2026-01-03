@@ -1,0 +1,2 @@
+-- Placeholder for syncing keys if needed across clients
+-- For now handling local ownership via events
