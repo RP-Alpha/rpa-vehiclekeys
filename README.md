@@ -17,8 +17,16 @@
 
 - 🔐 **Lock/Unlock** - Press `L` with visual & audio feedback
 - 🚗 **Engine Control** - `/engine` command
-- 🔗 **Integration** - Exports for garages and jobs
+- � **Lockpicking** - Item-based with break chance
+- 🔥 **Hotwiring** - Skill-check minigame
+- 🔗 **Shared Keys** - Share with gang/job members
 - 🛡️ **Anti-Theft** - Prevents engine start without keys
+
+---
+
+## 📦 Dependencies
+
+- `rpa-lib` (Required)
 
 ---
 
@@ -28,19 +36,47 @@
 2. Extract to your `resources` folder
 3. Add to `server.cfg`:
    ```cfg
+   ensure rpa-lib
    ensure rpa-vehiclekeys
    ```
 
 ---
 
-## 📚 Exports
+## ⚙️ Configuration
 
 ```lua
--- Give keys (Client)
-exports['rpa-vehiclekeys']:GiveKeys(plate)
+Config.LockpickItem = 'lockpick'
+Config.LockpickTime = 15000
+Config.LockpickBreakChance = 25
+Config.AlertPolice = true
 
--- Check keys (Client)
-local hasKeys = exports['rpa-vehiclekeys']:HasKeys(plate)
+Config.SharedKeys = {
+    enabled = true,
+    maxShares = 5,
+    gangSharing = true,
+    jobSharing = true
+}
+```
+
+---
+
+## 📚 Exports
+
+### Client
+
+```lua
+exports['rpa-vehiclekeys']:GiveKeys(plate)
+exports['rpa-vehiclekeys']:HasKeys(plate)
+exports['rpa-vehiclekeys']:RemoveKeys(plate)
+```
+
+### Server
+
+```lua
+exports['rpa-vehiclekeys']:GiveKeys(source, plate)
+exports['rpa-vehiclekeys']:GiveTempKeys(source, plate)
+exports['rpa-vehiclekeys']:RemoveKeys(source, plate)
+exports['rpa-vehiclekeys']:HasKeys(source, plate)
 ```
 
 ---
