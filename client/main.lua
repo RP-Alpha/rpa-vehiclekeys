@@ -84,11 +84,66 @@ RegisterCommand('engine', ToggleEngine, false)
 -- Exports
 exports('GiveKeys', GiveKeys)
 exports('HasKeys', HasKeys)
+exports('RemoveKeys', RemoveKeys)
 
--- Events from Server (Syncing not fully implemented yet, local keys only for robustness)
-RegisterNetEvent('vehiclekeys:client:SetOwner', function(plate)
+-- Events from Server
+RegisterNetEvent('rpa-vehiclekeys:client:SetOwner', function(plate)
     GiveKeys(plate)
 end)
+
+RegisterNetEvent('rpa-vehiclekeys:client:RemoveKeys', function(plate)
+    RemoveKeys(plate)
+end)
+
+RegisterNetEvent('rpa-vehiclekeys:client:keyCheck', function(plate, hasKeys)
+    if hasKeys then
+        GiveKeys(plate)
+    end
+end)
+
+-- Request keys from server on spawn (for owned vehicles)
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
+    -- Keys will be synced via server events when needed
+end)
+
+-- Give keys command (for testing and RP scenarios)
+RegisterCommand('givekeys', function()
+    local ped = PlayerPedId()
+    local coords = GetEntityCoords(ped)
+    local closestPlayer, closestDistance = nil, 3.0
+    
+    -- Find closest player
+    for _, playerId in ipairs(GetActivePlayers()) do
+        if playerId ~= PlayerId() then
+            local targetPed = GetPlayerPed(playerId)
+            local targetCoords = GetEntityCoords(targetPed)
+            local distance = #(coords - targetCoords)
+            
+            if distance < closestDistance then
+                closestPlayer = GetPlayerServerId(playerId)
+                closestDistance = distance
+            end
+        end
+    end
+    
+    if not closestPlayer then
+        exports['rpa-lib']:Notify("No player nearby", "error")
+        return
+    end
+    
+    -- Get closest vehicle or current vehicle
+    local veh = GetVehiclePedIsIn(ped, true)
+    if veh == 0 then
+        veh = GetClosestVehicle(coords.x, coords.y, coords.z, 5.0, 0, 71)
+    end
+    
+    if veh ~= 0 then
+        local plate = GetVehicleNumberPlateText(veh)
+        TriggerServerEvent('rpa-vehiclekeys:server:giveKeysToPlayer', closestPlayer, plate)
+    else
+        exports['rpa-lib']:Notify("No vehicle nearby", "error")
+    end
+end, false)
 
 -- Prevent hotwiring if no keys (Simple enforcement loop)
 CreateThread(function()
